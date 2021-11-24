@@ -27,7 +27,7 @@ public class EmployeeCRUD {
         Transaction transaction = session.beginTransaction();
     }
 
-    public Integer saveEmplloyee (Employee employee){
+    public Integer saveEmployee (Employee employee){
         Session session = null;
         Integer id = null;
         try{
@@ -68,17 +68,21 @@ public class EmployeeCRUD {
         Employee employee = new Employee(0, "Adam", "Kowalski",
                 "programista15k", "Warszawa", 20, 15000);
 
-        Integer newId = saveEmplloyee(employee);
+        Integer newId = saveEmployee(employee);
         System.out.println("Zapisano rekord id: " + newId);
 
+        Employee savedEmployee = getEmployee(newId);
+        System.out.println("Ostatni dodany: " +  savedEmployee);
 
-        System.out.println("Ostatni dodany: " +  getEmployee(newId));
+        updateEmployee(newId,"Jan");
 
         List<Employee> empList = getEmployees();
         System.out.println("Results: " + empList.size());
         for(int i = 0; i < empList.size(); i++){
             System.out.println("Pracownik  " + i + ": " + empList.get(i) );
         }
+        deleteEmployee(empList.get(0).getId());
+        System.out.println("Skasowanie pracownika o id: " + empList.get(0).getId());
     };
 
     public List getEmployees(){
@@ -87,12 +91,9 @@ public class EmployeeCRUD {
         try{
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-
             String hql = "FROM Employee" ;
             Query query = session.createQuery(hql);
             results = query.list();
-
-
         }catch(Exception e){
             e.printStackTrace();
         }finally {
@@ -101,6 +102,42 @@ public class EmployeeCRUD {
         return results;
     }
 
+    public void updateEmployee(Integer id, String name){
+        Session session = null;
+        Transaction transaction = null;
+        try{
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            Employee employee = (Employee) session.get(Employee.class, id);
+            employee.setName(name);
+            session.update(employee);
+            transaction.commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            if(transaction != null) transaction.rollback();
+        }finally {
+            if(session != null) session.close();
+        }
+    }
+
+    public void deleteEmployee(Integer id){
+        Session session = null;
+        Transaction transaction = null;
+        try{
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            Employee employee = (Employee) session.get(Employee.class, id);
+            session.delete(employee);
+            transaction.commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            if(transaction != null) transaction.rollback();
+        }finally {
+            if(session != null) session.close();
+        }
+    }
 
     public static void main(String[] args) {
         EmployeeCRUD employeeCRUD = new EmployeeCRUD();
