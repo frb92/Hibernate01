@@ -9,6 +9,8 @@
         <property name="connection.username">root</property>
         <property name="connection.password"></property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <mapping resource="employee.hbm.xml"></mapping>
+        <mapping class="org.example.Employee"></mapping>
+        <mapping class="org.example.oneToMany.model.Question"></mapping>
+        <mapping class="org.example.oneToMany.model.Answer"></mapping>
     </session-factory>
 </hibernate-configuration>

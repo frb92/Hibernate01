@@ -1,9 +1,19 @@
 package org.example;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="employee2")
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name, surname, jobTitle, address;
-    private int age, salary;
+    private int age;
+
+    @Column(name = "salary")
+    private int salary;
 
     public Employee() {
     }
