@@ -12,5 +12,7 @@
         <mapping class="org.example.Employee"></mapping>
         <mapping class="org.example.oneToMany.model.Question"></mapping>
         <mapping class="org.example.oneToMany.model.Answer"></mapping>
+        <mapping class="org.example.oneToOne.model.ParcelAddress"></mapping>
+        <mapping class="org.example.oneToOne.model.Parcel"></mapping>
     </session-factory>
 </hibernate-configuration>
